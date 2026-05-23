@@ -215,4 +215,4 @@ Claude routes to it without you having to type `/external-memory`:
 
 ## License
 
-MIT — do whatever you want with it. Attribution appreciated but not required.
+[MIT](LICENSE) — do whatever you want with it. Attribution appreciated but not required.
