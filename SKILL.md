@@ -32,7 +32,13 @@ my CLAUDE.md", "harvest the last 60 days"), use it. Otherwise auto-detect:
 ```bash
 cd <repo-root>
 canonical_count=$(ls AGENTS.md PLAN.md PROGRESS.md VERIFY.md 2>/dev/null | wc -l)
-substantive_claude=$([[ -f CLAUDE.md ]] && [[ $(wc -l < CLAUDE.md) -gt 10 ]] && echo yes)
+# A "substantive source" = a tool-specific memory file with real content
+# that isn't already a pointer. Check ALL of them, not just CLAUDE.md.
+substantive_source=$(for f in CLAUDE.md GEMINI.md AGENT.md .cursorrules; do
+  [[ -f $f ]] && [[ $(wc -l < "$f") -gt 10 ]] \
+    && ! grep -q "canonical content lives in AGENTS.md" "$f" 2>/dev/null \
+    && echo "$f"
+done)
 ```
 
 | State | Default mode |
@@ -55,12 +61,16 @@ Goal: scaffold the six files, customized to the project — not generic placehol
 
 ### Steps
 
-1. **Gather context.** Read in order, whichever exist:
-   - `README.md` — for project purpose, stack.
+1. **Gather context.** Read in this priority order, whichever exist:
    - A PRD / spec doc if present (`docs/PRD.md`, `PRD.md`, `docs/spec.md`,
-     or similar) — the richest source for stated conventions, locked-in
-     tech decisions, deployment target, and "things to never do". Prefer it
-     over guessing when it exists.
+     or similar) — **read this first.** It's the richest source for stated
+     conventions, locked-in tech decisions, deployment target, and "things
+     to never do", and it usually outranks the README. Prefer it over
+     guessing when it exists.
+   - A planning / brainstorm doc if present (`docs/brainstorm.md` or
+     similar) — optional context for rejected alternatives and the *why*
+     behind the PRD's choices. Useful for "Open questions / future work".
+   - `README.md` — supporting context for project purpose and stack.
    - `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `Gemfile` — for tech stack and `scripts:` / test commands.
    - `Makefile`, `justfile`, `tox.ini`, `noxfile.py` — for verify commands.
    - `CONTRIBUTING.md`, `.pre-commit-config.yaml` — for conventions and check commands.
@@ -75,7 +85,12 @@ Goal: scaffold the six files, customized to the project — not generic placehol
    - **PROGRESS.md** — one initial "Session 1" entry dated `$(date -u +%Y-%m-%d)`: "Done: scaffolded external memory files" + a "Next:" inferred from PLAN.md's "Now" if possible.
    - **VERIFY.md** — "Start command" and "Pre-commit" populated with real commands you found (dev server, npm test, pytest, cargo test, make lint, etc.); "Key pages" seeded from the PRD's routes/screens if listed; "Pre-deploy" and "Smoke tests" left as `_TODO_` unless context tells you what to put.
 
-4. **Write the pointer files** (3 lines each):
+4. **Write the pointer files** (3 lines each). **Safety:** before writing
+   `CLAUDE.md` or `GEMINI.md`, check whether it already exists with
+   substantive content (>10 lines and not already a pointer). If it does,
+   **stop — do not overwrite it.** That's a `migrate` case, not `init`;
+   surface it and ask the user. Only write a pointer over a file that's
+   absent or already a pointer.
    ```markdown
    # CLAUDE.md
 
@@ -159,11 +174,12 @@ tick PLAN.md, append to VERIFY.md if new checks emerged.
    entry (look for `## YYYY-MM-DD`). If PROGRESS.md is empty/missing, use
    7 days ago.
 
-2. **Survey recent activity:**
+2. **Survey recent activity** (all tied to `$cutoff`, so it's safe in a
+   young repo with few commits):
    ```bash
    git log --since="$cutoff" --oneline
-   git diff HEAD~10..HEAD --stat   # roughly
-   git status                       # unstaged work counts too
+   git log --since="$cutoff" --stat   # what actually changed since the cutoff
+   git status                          # unstaged work counts too
    ```
 
 3. **Draft a PROGRESS.md entry** at the top, matching the session shape:
