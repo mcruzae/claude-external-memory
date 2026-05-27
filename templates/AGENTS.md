@@ -69,10 +69,15 @@ already has it._
 - **Git:** small, focused commits. Branches for anything risky.
 - **No emojis in code or commits** unless asked.
 - **No comments explaining the obvious.** Only explain *why* when it's non-obvious.
-- **External memory ritual:** after any non-trivial change, append a one-liner to
-  [PROGRESS.md](PROGRESS.md) (date, what changed, next step). Tick
-  [PLAN.md](PLAN.md) items as done. If you add a new way to verify something,
-  add it to [VERIFY.md](VERIFY.md).
+- **External memory ritual** — two cadences, don't conflate them:
+  - *During the session:* tick [PLAN.md](PLAN.md) items as they land, and
+    add a check to [VERIFY.md](VERIFY.md) the moment a new way to verify
+    something earns its keep.
+  - *At session close:* write **one** [PROGRESS.md](PROGRESS.md) entry for
+    the session (`Done` / `In progress` / `Next` / `Notes for future me`).
+    Don't append a line per change mid-flow — the `Next` and `Notes` fields
+    only make sense once the session ends. Running the external-memory skill
+    in `update` mode drafts this entry from the git log.
 
 _TODO: Add any project-specific conventions (commit message style, branch
 naming, code-review norms)._
