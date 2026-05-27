@@ -57,19 +57,23 @@ Goal: scaffold the six files, customized to the project — not generic placehol
 
 1. **Gather context.** Read in order, whichever exist:
    - `README.md` — for project purpose, stack.
+   - A PRD / spec doc if present (`docs/PRD.md`, `PRD.md`, `docs/spec.md`,
+     or similar) — the richest source for stated conventions, locked-in
+     tech decisions, deployment target, and "things to never do". Prefer it
+     over guessing when it exists.
    - `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `Gemfile` — for tech stack and `scripts:` / test commands.
    - `Makefile`, `justfile`, `tox.ini`, `noxfile.py` — for verify commands.
-   - `CONTRIBUTING.md` — for conventions.
+   - `CONTRIBUTING.md`, `.pre-commit-config.yaml` — for conventions and check commands.
    - `git log --oneline -20` — for recent activity to seed PROGRESS.md.
 
 2. **Read the templates** from `templates/` relative to this SKILL.md:
    - `templates/AGENTS.md`, `templates/PLAN.md`, `templates/PROGRESS.md`, `templates/VERIFY.md`
 
 3. **Customize each template** and write to the repo root:
-   - **AGENTS.md** — title with project name; "What this project is" distilled from README; "Tech stack" table populated from package files; "Non-negotiable principles" only if inferable (don't invent); "Conventions" with default ritual + anything found in CONTRIBUTING.md.
-   - **PLAN.md** — leave "Pending" near-empty (user fills it); seed "Definition of done" from README's stated capabilities.
-   - **PROGRESS.md** — one initial entry dated `$(date -u +%Y-%m-%d)`: "External memory files initialized" + one-line "Next:" inferred from PLAN.md if possible.
-   - **VERIFY.md** — Pre-commit section populated with real commands you found (npm test, pytest, cargo test, make lint, etc.); Post-deploy left as `_TODO_` unless context tells you what to put.
+   - **AGENTS.md** — title with project name; "What this project is" distilled from README/PRD; "Tech stack" table populated from package files (and any locked-in choices the PRD states); "Non-negotiable principles" from the PRD's "never do" items or CONTRIBUTING.md (don't invent — leave `_TODO_` if none); "Conventions" with the default ritual + concrete rules pulled from CONTRIBUTING.md / `.pre-commit-config.yaml` / the PRD (writing style, code style, commit format).
+   - **PLAN.md** — seed "Now" with the first concrete step if the PRD/README implies one, leave "Next"/"Later"/"Blocked" near-empty (user fills them); seed "Definition of done" from the PRD's success criteria or README's stated capabilities.
+   - **PROGRESS.md** — one initial "Session 1" entry dated `$(date -u +%Y-%m-%d)`: "Done: scaffolded external memory files" + a "Next:" inferred from PLAN.md's "Now" if possible.
+   - **VERIFY.md** — "Start command" and "Pre-commit" populated with real commands you found (dev server, npm test, pytest, cargo test, make lint, etc.); "Key pages" seeded from the PRD's routes/screens if listed; "Pre-deploy" and "Smoke tests" left as `_TODO_` unless context tells you what to put.
 
 4. **Write the pointer files** (3 lines each):
    ```markdown
@@ -162,20 +166,28 @@ tick PLAN.md, append to VERIFY.md if new checks emerged.
    git status                       # unstaged work counts too
    ```
 
-3. **Draft a PROGRESS.md entry** at the top:
+3. **Draft a PROGRESS.md entry** at the top, matching the session shape:
    ```
-   ## YYYY-MM-DD — <one-line title>
+   ## YYYY-MM-DD · Session N
 
+   **Done:**
    - <change 1 — file/area, one line>
-   - <change 2>
-   - Next: <single most important next step>
+
+   **In progress:**
+   - <anything half-finished, or omit>
+
+   **Next:** <single most important next step, with a file reference>
+
+   **Notes for future me:**
+   - <non-obvious gotcha worth a cold-start session, or omit the section>
    ```
-   Keep it tight. One line per change. The commit message has the details.
+   Keep each bullet to one line. The commit message has the details.
 
 4. **Tick PLAN.md items.** For each `- [ ]` that the recent work
-   completed, change to `- [x]`. If an item is fully done and stale,
-   consider moving its essence into PROGRESS.md as a historical note and
-   removing it from PLAN.md.
+   completed, change to `- [x]`, and promote items up the horizons (Next →
+   Now) as work advances. If an item is fully done and stale, consider
+   moving its essence into PROGRESS.md as a historical note and removing it
+   from PLAN.md.
 
 5. **Add to VERIFY.md if needed.** New endpoint to curl, new test
    command, new smoke check — add it.
@@ -208,13 +220,16 @@ a mature repo, or any time PROGRESS.md is suspiciously empty.
    Within each week, deduplicate near-identical subjects (e.g. multiple
    "fix typo" commits → one bullet).
 
-4. **For each weekly cluster, write a PROGRESS entry:**
-   - Title: pick the most descriptive commit subject as the theme, or
-     synthesize one from the changed paths (e.g. "auth refactor" if most
-     commits touch `app/auth.py`).
-   - Bullets: one per significant commit (or commit cluster). Use commit
-     hashes when helpful (`ed9a8d5`).
-   - "Next:" line: extract from the LAST commit in the week if it says
+4. **For each weekly cluster, write a PROGRESS entry.** Use the entry's
+   date heading and a `Done:` block — harvested history is a summary, so
+   `In progress` / `Notes for future me` usually don't apply; omit them.
+   - Heading: `## YYYY-MM-DD · <theme>` (date of the cluster's last commit).
+     Pick the most descriptive commit subject as the theme, or synthesize
+     one from the changed paths (e.g. "auth refactor" if most commits touch
+     `app/auth.py`).
+   - `**Done:**` bullets: one per significant commit (or commit cluster).
+     Use commit hashes when helpful (`ed9a8d5`).
+   - `**Next:**` line: extract from the LAST commit in the week if it says
      "WIP", "todo", or similar; otherwise omit.
 
 5. **Insert harvested entries at the top of PROGRESS.md**, newest first,
@@ -290,8 +305,10 @@ Goal: deep staleness audit; don't auto-fix.
   status, PROGRESS.md tracks history, VERIFY.md tracks how-to-check,
   AGENTS.md tracks norms. If the same fact wants to appear in two files,
   link instead.
-- **Keep PROGRESS.md entries short.** One line per non-trivial change.
-  The commit message has the details.
+- **Keep PROGRESS.md entries short.** One entry per work session
+  (`Done` / `In progress` / `Next` / `Notes for future me`), one line per
+  bullet. The commit message has the details; the entry is for cold-start
+  orientation, not a changelog.
 - **Templates live in `templates/`** relative to this SKILL.md. Read them
   with the absolute path to this skill directory + `/templates/<file>` —
   do not assume a working-directory location.

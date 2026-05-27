@@ -8,37 +8,34 @@ For the *why* behind each item, the commit message or
 
 ---
 
-## Pending
+Work is grouped by time horizon, newest commitment first. Keep **Now**
+small — it's what you'd pick up on a cold start.
 
-_TODO: Group into phases if the work has natural ordering, otherwise a
-flat list. Examples below — replace with real items._
+## Now (this iteration)
 
-### 1. _TODO: phase name_
+- [ ] _TODO: the thing actively being worked on_
+- [ ] _TODO: next thing in this iteration_
 
-- [ ] _TODO: first thing_
-- [ ] _TODO: second thing_
+## Next (after Now lands)
 
-### 2. _TODO: next phase_
+- [ ] _TODO: queued, not started_
 
-- [ ] _TODO_
+## Later (parked — captured so it doesn't get lost)
+
+- _TODO: nice-to-have, with a one-line reason it's parked_
+
+## Blocked
+
+- _None right now. (When something's blocked, note what it's waiting on.)_
 
 ---
 
 ## Definition of done
 
 What does "shipped" / "v1" look like? When every box below is ticked,
-the project is done.
+the project is done. Anything beyond this list is Later.
 
 - [ ] _TODO: user-facing capability 1_
 - [ ] _TODO: user-facing capability 2_
 - [ ] _TODO: ops requirement (logs, monitoring, backups, etc.)_
 - [ ] _TODO: no regression in adjacent systems_
-
-Anything beyond this list is v2.
-
----
-
-## v2 / future (not pending — captured so it doesn't get lost)
-
-- _TODO: nice-to-have 1_
-- _TODO: nice-to-have 2_

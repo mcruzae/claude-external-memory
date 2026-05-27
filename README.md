@@ -36,8 +36,8 @@ a canonical filename that every modern agent tool reads.
 | File | Role | Lifespan |
 |---|---|---|
 | **AGENTS.md** | Canonical. Repo norms, tech stack, gotchas, conventions. | Stable. Edit rarely. |
-| **PLAN.md** | Checklist + definition of done. | Edit as work lands. |
-| **PROGRESS.md** | Short running log of changes, failures, next steps. Newest on top. | Append-only. |
+| **PLAN.md** | Work by horizon (Now / Next / Later / Blocked) + definition of done. | Edit as work lands. |
+| **PROGRESS.md** | Per-session log (Done / In progress / Next / Notes for future me). Newest on top. | Append-only. |
 | **VERIFY.md** | Exact commands that prove things work (lint, tests, smoke). | Edit when a new check earns its keep. |
 | **CLAUDE.md** | 3-line pointer → AGENTS.md (Claude Code reads this filename). | Set once. |
 | **GEMINI.md** | 3-line pointer → AGENTS.md (Gemini CLI reads this filename). | Set once. |
@@ -181,8 +181,9 @@ Reports findings as a numbered list; doesn't auto-fix.
 
 - **AGENTS.md is canonical.** CLAUDE.md and GEMINI.md must stay as 3-line
   pointers. Never duplicate substantive content into them.
-- **PROGRESS.md is append-only and short.** One line per non-trivial
-  change. Commit messages have the details.
+- **PROGRESS.md is append-only and short.** One entry per work session
+  (Done / In progress / Next / Notes for future me), one line per bullet.
+  Commit messages have the details.
 - **No auto-commit.** The skill writes files; you commit.
 - **Don't fabricate norms.** If something can't be inferred, leave a
   `_TODO_` marker for the human.

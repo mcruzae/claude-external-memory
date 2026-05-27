@@ -1,16 +1,36 @@
 # VERIFY.md — _TODO: project name_
 
-Exact commands to prove things still work. Two flavors:
-
-- **Pre-commit / local smoke** — fast, offline. Run before pushing.
-- **Post-deploy smoke** — on the live environment, after a deploy.
+Exact, observable commands that prove things still work — plus the bare
+facts an agent or human needs to run and inspect the project at all. Every
+command pairs with its expected outcome.
 
 If a new "did this break something?" check earns its keep more than once,
 add it here so future-me doesn't reinvent it.
 
 ---
 
-## Pre-commit smoke
+## Key pages / surfaces
+
+_TODO: The routes, screens, or entry points worth eyeballing after a
+change. For a web app, list URLs. For a CLI, list the headline commands.
+A reviewer (or screenshot/audit tool) starts here._
+
+- `/` — _TODO: what it is_
+- _TODO: other important route/screen_
+
+## Start command
+
+_TODO: The exact command(s) to run the project locally, and what a healthy
+start looks like._
+
+```bash
+_TODO: e.g.  npm run dev          # then open http://localhost:3000
+```
+Expect: _TODO — e.g. "serves on :3000, no console errors"._
+
+---
+
+## Pre-commit (must all pass before committing)
 
 _TODO: Fast offline checks. Populate from package.json scripts, Makefile,
 tox.ini, etc. Examples below — replace with the project's real commands._
@@ -39,21 +59,28 @@ Expect: silent success.
 
 ---
 
-## Post-deploy smoke
+## Pre-deploy (must all pass before shipping)
+
+_TODO: Everything that gates a release. Skip if the project doesn't deploy._
+
+- All **Pre-commit** checks above.
+- _TODO: any release-only gate — e.g. a full e2e run, an accessibility or
+  performance audit of the Key pages above, a staging smoke test._
+- _TODO: manual verification step, if any._
+
+---
+
+## Smoke tests (live / post-deploy)
 
 _TODO: Live-environment checks. Skip if not applicable._
-
-### Health endpoint
 
 ```bash
 _TODO: e.g.  curl -sI https://example.com/health | head -3
 ```
 Expect: `HTTP/2 200`.
 
-### Critical user flow
-
-_TODO: 1-2 sentence description of the golden path + the exact command/URL
-that exercises it._
+_TODO: 1-2 sentence description of the golden user path + the exact
+command/URL that exercises it._
 
 ---
 
