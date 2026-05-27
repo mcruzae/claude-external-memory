@@ -64,8 +64,11 @@ Expect: silent success.
 _TODO: Everything that gates a release. Skip if the project doesn't deploy._
 
 - All **Pre-commit** checks above.
-- _TODO: any release-only gate — e.g. a full e2e run, an accessibility or
-  performance audit of the Key pages above, a staging smoke test._
+- _TODO: the project's ship gate, if it has one — e.g. a `/ship-check`
+  slash command that bundles responsive screenshots, an accessibility /
+  performance audit of the Key pages above, and the Pre-commit checks. Run
+  it here. (Delete this line if there's no such gate.)_
+- _TODO: any other release-only check — a full e2e run, a staging smoke test._
 - _TODO: manual verification step, if any._
 
 ---

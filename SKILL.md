@@ -68,8 +68,10 @@ Goal: scaffold the six files, customized to the project — not generic placehol
      to never do", and it usually outranks the README. Prefer it over
      guessing when it exists.
    - A planning / brainstorm doc if present (`docs/brainstorm.md` or
-     similar) — optional context for rejected alternatives and the *why*
-     behind the PRD's choices. Useful for "Open questions / future work".
+     similar) — **fallback context only.** Once the PRD exists it's not
+     load-bearing; skip it unless it captures rejected alternatives or the
+     *why* behind a choice that the PRD itself doesn't. Useful at most for
+     "Open questions / future work".
    - `README.md` — supporting context for project purpose and stack.
    - `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `Cargo.toml`, `Gemfile` — for tech stack and `scripts:` / test commands.
    - `Makefile`, `justfile`, `tox.ini`, `noxfile.py` — for verify commands.
@@ -83,7 +85,7 @@ Goal: scaffold the six files, customized to the project — not generic placehol
    - **AGENTS.md** — title with project name; "What this project is" distilled from README/PRD; "Tech stack" table populated from package files (and any locked-in choices the PRD states); "Non-negotiable principles" from the PRD's "never do" items or CONTRIBUTING.md (don't invent — leave `_TODO_` if none); "Conventions" with the default ritual + concrete rules pulled from CONTRIBUTING.md / `.pre-commit-config.yaml` / the PRD (writing style, code style, commit format).
    - **PLAN.md** — seed "Now" with the first concrete step if the PRD/README implies one, leave "Next"/"Later"/"Blocked" near-empty (user fills them); seed "Definition of done" from the PRD's success criteria or README's stated capabilities.
    - **PROGRESS.md** — one initial "Session 1" entry dated `$(date -u +%Y-%m-%d)`: "Done: scaffolded external memory files" + a "Next:" inferred from PLAN.md's "Now" if possible.
-   - **VERIFY.md** — "Start command" and "Pre-commit" populated with real commands you found (dev server, npm test, pytest, cargo test, make lint, etc.); "Key pages" seeded from the PRD's routes/screens if listed; "Pre-deploy" and "Smoke tests" left as `_TODO_` unless context tells you what to put.
+   - **VERIFY.md** — "Start command" and "Pre-commit" populated with real commands you found (dev server, npm test, pytest, cargo test, make lint, etc.); "Key pages" seeded from the PRD's routes/screens if listed; "Pre-deploy" and "Smoke tests" left as `_TODO_` unless context tells you what to put. If the repo defines a ship gate (e.g. `.claude/commands/ship-check.md` exists), fill the Pre-deploy ship-gate line with the real command (`/ship-check`) instead of leaving the example.
 
 4. **Write the pointer files** (3 lines each). **Safety:** before writing
    `CLAUDE.md` or `GEMINI.md`, check whether it already exists with
@@ -297,16 +299,27 @@ Goal: deep staleness audit; don't auto-fix.
    Flag anything in AGENTS.md that isn't installed, or any major
    framework in the install list that AGENTS.md doesn't mention.
 
-5. **Dangling "Next:" items** — for each `## YYYY-MM-DD` entry in
+5. **PRD drift** — only if a PRD/spec doc exists (`docs/PRD.md` or similar).
+   The PRD is the project's commit point and AGENTS.md was seeded from it,
+   so they drift apart as decisions change. Compare the PRD's locked-in
+   sections against AGENTS.md and flag mismatches:
+   - **Tech stack** — PRD's chosen stack vs AGENTS.md "Tech stack" table.
+   - **Deployment target** — PRD's target (on-prem, serverless, etc.) vs
+     what AGENTS.md / VERIFY.md assume.
+   - **Design language** — PRD's committed aesthetic vs anything AGENTS.md states.
+   - **Constraints / non-negotiables** — PRD's "never do" items vs AGENTS.md's.
+   Surface as: "PRD says X, AGENTS.md says Y — one of them is stale."
+
+6. **Dangling "Next:" items** — for each `## YYYY-MM-DD` entry in
    PROGRESS.md, extract the `Next:` line. Check whether its content
    (case-insensitive substring match) appears as a `- [ ]` item in
    PLAN.md. If not, flag as "PROGRESS promised X, never made it to PLAN".
 
-6. **Pointer-file drift** — confirm `CLAUDE.md` and `GEMINI.md` are still
+7. **Pointer-file drift** — confirm `CLAUDE.md` and `GEMINI.md` are still
    <=10 lines and point to AGENTS.md. If content has crept in (someone
    edited the pointer instead of AGENTS.md), flag it.
 
-7. **Report findings as a numbered list.** Ask whether to apply each fix.
+8. **Report findings as a numbered list.** Ask whether to apply each fix.
    Don't auto-fix.
 
 ---
