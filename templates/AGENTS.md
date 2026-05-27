@@ -66,21 +66,40 @@ already has it._
 
 ## Conventions
 
-- **Git:** small, focused commits. Branches for anything risky.
-- **No emojis in code or commits** unless asked.
-- **No comments explaining the obvious.** Only explain *why* when it's non-obvious.
-- **External memory ritual** — two cadences, don't conflate them:
-  - *During the session:* tick [PLAN.md](PLAN.md) items as they land, and
-    add a check to [VERIFY.md](VERIFY.md) the moment a new way to verify
-    something earns its keep.
-  - *At session close:* write **one** [PROGRESS.md](PROGRESS.md) entry for
-    the session (`Done` / `In progress` / `Next` / `Notes for future me`).
-    Don't append a line per change mid-flow — the `Next` and `Notes` fields
-    only make sense once the session ends. Running the external-memory skill
-    in `update` mode drafts this entry from the git log.
+Concrete rules beat principles. Fill each with the project's actual
+choices (pull from the PRD, CONTRIBUTING.md, `.pre-commit-config.yaml`);
+delete a sub-header that genuinely doesn't apply rather than leaving it vague.
 
-_TODO: Add any project-specific conventions (commit message style, branch
-naming, code-review norms)._
+**Writing style** _(applies to docs, comments, commit text, UI copy)_:
+
+- _TODO: e.g. plain English; no em-dashes; dates as YYYY-MM-DD._
+
+**Code style:**
+
+- _TODO: per language → linter/formatter + line length (e.g. "TS: eslint + prettier, 100 cols")._
+- _TODO: folder / naming rules._
+- **No comments explaining the obvious.** Only explain *why* when it's non-obvious.
+
+**Commit messages:**
+
+- _TODO: format — e.g. `type(scope): description`._
+- _TODO: an example — e.g. `feat(auth): add password reset flow`._
+- Small, focused commits. Branches for anything risky. No emojis unless asked.
+
+**Things to never do:**
+
+- _TODO: specific prohibited actions, each with the reason why._
+
+**External memory ritual** — two cadences, don't conflate them:
+
+- *During the session:* tick [PLAN.md](PLAN.md) items as they land, and
+  add a check to [VERIFY.md](VERIFY.md) the moment a new way to verify
+  something earns its keep.
+- *At session close:* write **one** [PROGRESS.md](PROGRESS.md) entry for
+  the session (`Done` / `In progress` / `Next` / `Notes for future me`).
+  Don't append a line per change mid-flow — the `Next` and `Notes` fields
+  only make sense once the session ends. Running the external-memory skill
+  in `update` mode drafts this entry from the git log.
 
 ---
 
